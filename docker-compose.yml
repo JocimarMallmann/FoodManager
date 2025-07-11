@@ -1,17 +1,41 @@
+version: '3.8'
+
 services:
-  mysql:
-    image: mysql:8.0
-    container_name: foodmanager-mysql
+  spring_app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring_app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql_db
     environment:
-      MYSQL_DATABASE: foodmanager
+      SPRING_DATASOURCE_URL: ${DB_URL}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASS}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: none
+      SPRING_PROFILES_ACTIVE: prod
+    networks:
+      - backend-net
+
+  mysql_db:
+    image: mysql:8
+    container_name: mysql_db
+    environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: foodmanager
-      MYSQL_PASSWORD: foodmanager
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - backend-net
 
 volumes:
   mysql_data:
+
+networks:
+  backend-net:
