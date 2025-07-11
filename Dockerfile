@@ -1,5 +1,3 @@
-# multi-stage build
-
 # ----------------------------
 # Etapa 1: Build da aplicação Java e cache das dependências
 # ----------------------------

@@ -9,7 +9,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      - mysql_db
     environment:
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
@@ -19,9 +19,9 @@ services:
     networks:
       - backend-net
 
-  db:
+  mysql_db:
     image: mysql:8
-    container_name: db
+    container_name: mysql_db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: ${DB_NAME}
