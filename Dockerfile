@@ -1,38 +1,46 @@
-# ----------------------------
-# Etapa 1: Build da aplicação Java e cache das dependências
-# ----------------------------
+# -------------------------------------------------------------------
+# Etapa 1: Build da aplicação Java com cache de dependências
+# A imagem 'builder' será usada para compilar o código
+# -------------------------------------------------------------------
 FROM eclipse-temurin:21-jdk AS builder
 
-# Define o diretório de trabalho dentro da imagem de build
+# Define o diretório de trabalho principal para a etapa de build
 WORKDIR /app-food-manager
 
-# Copia apenas os arquivos necessários para baixar dependências primeiro
+# Copia os arquivos essenciais para o gerenciamento de dependências do Maven
 COPY pom.xml .
 COPY mvnw .
 COPY .mvn .mvn
 
-# Baixa todas as dependências necessárias e plugins Maven, sem compilar
+# Concede permissão de execução ao Maven Wrapper (essencial para evitar erros)
+RUN chmod +x ./mvnw
+
+# Baixa as dependências do projeto. O Docker usará o cache desta camada
+# se os arquivos pom.xml não mudarem, acelerando builds futuros.
 RUN ./mvnw dependency:go-offline
 
-# Agora copia o restante do código-fonte
+# Agora, copia todo o restante do código-fonte da aplicação
 COPY . .
 
-# Compila e empacota o projeto em um .jar
+# Compila o código, executa os testes e empacota a aplicação em um arquivo .jar
 RUN ./mvnw clean package -DskipTests
 
-# ----------------------------
-# Etapa 2: Imagem de execução
-# ----------------------------
+
+# -------------------------------------------------------------------
+# Etapa 2: Imagem final de execução
+# Esta imagem será leve, contendo apenas o necessário para rodar a aplicação
+# -------------------------------------------------------------------
 FROM eclipse-temurin:21-jre
 
-# Define o diretório de trabalho da aplicação
+# Define o diretório de trabalho final
 WORKDIR /app-food-manager
 
-# Copia apenas o .jar gerado da etapa anterior
+# Copia apenas o artefato compilado (.jar) da etapa de build anterior
+# Isso mantém a imagem final pequena e segura, sem código-fonte ou ferramentas de build.
 COPY --from=builder /app-food-manager/target/*.jar app.jar
 
-# Expõe a porta 8080 (a mesma usada pela aplicação Spring Boot)
+# Expõe a porta que a aplicação Spring Boot usa por padrão
 EXPOSE 8080
 
-# Comando de inicialização do container
+# Define o comando que será executado quando o contêiner iniciar
 ENTRYPOINT ["java", "-jar", "app.jar"]
