@@ -3,6 +3,7 @@ package br.com.food_manager.foodmanager.model.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+import br.com.food_manager.foodmanager.model.UserType;
 
 public record UserRequest(
         @NotBlank(message = "Nome é obrigatório")
@@ -22,6 +23,8 @@ public record UserRequest(
         String password,
 
         @Size(max = 255, message = "Endereço deve ter no máximo 255 caracteres")
-        String address
+        String address,
+        
+        UserType userType
 ) {}
 
