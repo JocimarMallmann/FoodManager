@@ -27,4 +27,3 @@ public record UserRequest(
         
         UserType userType
 ) {}
-

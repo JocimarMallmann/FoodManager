@@ -7,8 +7,6 @@ import br.com.food_manager.foodmanager.model.dto.UserResponse;
 import br.com.food_manager.foodmanager.model.dto.UserUpdateRequest;
 import br.com.food_manager.foodmanager.service.UserService;
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +27,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> findAll() {
-        List<User> users =  userService.findAll();
+        List<User> users = userService.findAll();
         List<UserResponse> response = userMapper.toResponseList(users);
         return ResponseEntity.ok(response);
     }
@@ -84,6 +82,3 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 }
-
-
-
