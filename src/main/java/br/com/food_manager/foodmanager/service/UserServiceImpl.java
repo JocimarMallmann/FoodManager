@@ -97,20 +97,24 @@ public class UserServiceImpl implements UserService {
 
         User existingUser = findById(id);
 
-        // Atualiza apenas os campos não nulos
+        // Atualiza apenas os campos não nulos/não vazios
         if (StringUtils.hasText(userUpdates.getName())) {
             existingUser.setName(userUpdates.getName());
         }
 
         if (StringUtils.hasText(userUpdates.getEmail())) {
-            if (userRepository.existsByEmailAndIdNot(userUpdates.getEmail(), id)) {
+            // Verifica duplicação apenas se o email está sendo alterado
+            if (!userUpdates.getEmail().equals(existingUser.getEmail()) &&
+                userRepository.existsByEmailAndIdNot(userUpdates.getEmail(), id)) {
                 throw new UserAlreadyExistsException("email", userUpdates.getEmail());
             }
             existingUser.setEmail(userUpdates.getEmail());
         }
 
         if (StringUtils.hasText(userUpdates.getLogin())) {
-            if (userRepository.existsByLoginAndIdNot(userUpdates.getLogin(), id)) {
+            // Verifica duplicação apenas se o login está sendo alterado
+            if (!userUpdates.getLogin().equals(existingUser.getLogin()) &&
+                userRepository.existsByLoginAndIdNot(userUpdates.getLogin(), id)) {
                 throw new UserAlreadyExistsException("login", userUpdates.getLogin());
             }
             existingUser.setLogin(userUpdates.getLogin());
@@ -141,41 +145,23 @@ public class UserServiceImpl implements UserService {
             throw new InvalidUserDataException("Usuário não pode ser nulo");
         }
 
-        // Validações básicas
-        if (!StringUtils.hasText(user.getName())) {
-            throw new InvalidUserDataException("Nome é obrigatório");
-        }
-
-        if (!StringUtils.hasText(user.getEmail())) {
-            throw new InvalidUserDataException("Email é obrigatório");
-        }
-
-        if (!StringUtils.hasText(user.getLogin())) {
-            throw new InvalidUserDataException("Login é obrigatório");
-        }
-
-        // Validação de formato de email básica
-        if (!user.getEmail().contains("@")) {
-            throw new InvalidUserDataException("Email deve ter formato válido");
-        }
-
         // Verificações de duplicação
         if (excludeId == null) {
             // Para criação de novo usuário
-            if (userRepository.existsByEmail(user.getEmail())) {
+            if (StringUtils.hasText(user.getEmail()) && userRepository.existsByEmail(user.getEmail())) {
                 throw new UserAlreadyExistsException("email", user.getEmail());
             }
 
-            if (userRepository.existsByLogin(user.getLogin())) {
+            if (StringUtils.hasText(user.getLogin()) && userRepository.existsByLogin(user.getLogin())) {
                 throw new UserAlreadyExistsException("login", user.getLogin());
             }
         } else {
             // Para atualização de usuário existente
-            if (userRepository.existsByEmailAndIdNot(user.getEmail(), excludeId)) {
+            if (StringUtils.hasText(user.getEmail()) && userRepository.existsByEmailAndIdNot(user.getEmail(), excludeId)) {
                 throw new UserAlreadyExistsException("email", user.getEmail());
             }
 
-            if (userRepository.existsByLoginAndIdNot(user.getLogin(), excludeId)) {
+            if (StringUtils.hasText(user.getLogin()) && userRepository.existsByLoginAndIdNot(user.getLogin(), excludeId)) {
                 throw new UserAlreadyExistsException("login", user.getLogin());
             }
         }
