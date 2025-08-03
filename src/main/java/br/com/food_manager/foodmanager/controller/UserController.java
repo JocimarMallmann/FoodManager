@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -35,9 +34,8 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
         User user = userService.findById(id);
-        return user != null ?
-                ResponseEntity.ok(userMapper.toResponse(user)) :
-                ResponseEntity.notFound().build();
+        UserResponse response = userMapper.toResponse(user);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
@@ -49,32 +47,32 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id, @Valid @RequestBody UserRequest userRequest) {
+    public ResponseEntity<UserResponse> updateUser(
+            @PathVariable Long id,
+            @Valid @RequestBody UserRequest userRequest) {
+
         User user = userMapper.toEntity(userRequest);
         User updated = userService.update(id, user);
-        updated.setLastUpdated(new Date());
         UserResponse response = userMapper.toResponse(updated);
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUserData(@PathVariable Long id, @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
-        User existingUser = userService.findById(id);
-        if (existingUser == null) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<UserResponse> updateUserData(
+            @PathVariable Long id,
+            @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
 
-        existingUser.setName(userUpdateRequest.name());
-        existingUser.setEmail(userUpdateRequest.email());
-        existingUser.setLogin(userUpdateRequest.login());
-        existingUser.setAddress(userUpdateRequest.address());
-        existingUser.setLastUpdated(new Date());
+        // Cria um objeto User apenas com os campos a serem atualizados
+        User userUpdates = new User();
+        userUpdates.setName(userUpdateRequest.name());
+        userUpdates.setEmail(userUpdateRequest.email());
+        userUpdates.setLogin(userUpdateRequest.login());
+        userUpdates.setAddress(userUpdateRequest.address());
 
-        User updated = userService.save(existingUser);
+        User updated = userService.partialUpdate(id, userUpdates);
         UserResponse response = userMapper.toResponse(updated);
         return ResponseEntity.ok(response);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
