@@ -55,19 +55,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(UserOperationException.class)
-    public ResponseEntity<ErrorResponse> handleUserOperationException(
-            UserOperationException ex, HttpServletRequest request) {
-
-        ErrorResponse error = ErrorResponse.of(
-                ex.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                request.getRequestURI()
-        );
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException ex, HttpServletRequest request) {
