@@ -357,6 +357,7 @@ Todas as exceções acima são capturadas e formatadas em `ErrorResponse` padron
 - **Possíveis Erros**:
     - 400 (ID inválido)
     - 404 (usuário não encontrado)
+    - 500 (erro interno)
 
 ### POST /api/user
 - **Descrição**: Cria novo usuário
