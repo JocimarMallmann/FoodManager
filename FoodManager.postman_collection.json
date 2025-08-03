@@ -1,0 +1,300 @@
+{
+	"info": {
+		"_postman_id": "7a8b812f-62cc-4dd4-bc80-a317d56de41b",
+		"name": "FoodManager",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12136162"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Jocimar Mallmann\",\r\n  \"email\": \"jocimarmallmann@email.com\",\r\n  \"login\": \"jocimar.mallmann\",\r\n  \"password\": \"123456\",\r\n  \"address\": \"Rua das Flores, 123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"jocimar.mallmann\",\r\n    \"password\": \"123456\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2NpbWFyLm1hbGxtYW5uIiwiaWF0IjoxNzU0MTg0MTQ2LCJleHAiOjE3NTQyNzA1NDZ9.8mz7e_h1sL-pFoyokBDT_Qpp4bLUKT2Fbn32J_t9oZ3Hhz_-XG9hCnmaRLxQj4rJ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2NpbWFyLm1hbGxtYW5uIiwiaWF0IjoxNzU0MTg0MTQ2LCJleHAiOjE3NTQyNzA1NDZ9.8mz7e_h1sL-pFoyokBDT_Qpp4bLUKT2Fbn32J_t9oZ3Hhz_-XG9hCnmaRLxQj4rJ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2NpbWFyLm1hbGxtYW5uIiwiaWF0IjoxNzU0MTg0MTQ2LCJleHAiOjE3NTQyNzA1NDZ9.8mz7e_h1sL-pFoyokBDT_Qpp4bLUKT2Fbn32J_t9oZ3Hhz_-XG9hCnmaRLxQj4rJ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"João Silva\",\r\n    \"email\": \"joao@email233.com\",\r\n    \"login\": \"joao123a\",\r\n    \"password\": \"seaaade\",\r\n    \"address\": \"Rua A, 123\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2NpbWFyLm1hbGxtYW5uIiwiaWF0IjoxNzU0MTkwODIzLCJleHAiOjE3NTQyNzcyMjN9.gbFRVGEgztT3TbPkeWjz1Vjwt0Z74BOBfwWXAlOSU0qqrgBqPZ_WvHX7DVNmAm3j",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"joao123aaaa\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/17",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2NpbWFyLm1hbGxtYW5uIiwiaWF0IjoxNzU0MTkwODIzLCJleHAiOjE3NTQyNzcyMjN9.gbFRVGEgztT3TbPkeWjz1Vjwt0Z74BOBfwWXAlOSU0qqrgBqPZ_WvHX7DVNmAm3j",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Novo Nome\",\r\n  \"email\": \"novoemail@exemplo.com\",\r\n  \"login\": \"novologin\",\r\n  \"address\": \"Novo Endereço\",\r\n  \"password\": \"novasenha\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/17",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2NpbWFyLm1hbGxtYW5uIiwiaWF0IjoxNzU0MTkwODIzLCJleHAiOjE3NTQyNzcyMjN9.gbFRVGEgztT3TbPkeWjz1Vjwt0Z74BOBfwWXAlOSU0qqrgBqPZ_WvHX7DVNmAm3j",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
