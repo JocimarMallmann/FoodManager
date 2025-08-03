@@ -1,10 +1,11 @@
-package br.com.food_manager.foodmanager.service;
+package br.com.food_manager.foodmanager.service.Impl;
 
 import br.com.food_manager.foodmanager.exception.InvalidUserDataException;
 import br.com.food_manager.foodmanager.exception.UserAlreadyExistsException;
 import br.com.food_manager.foodmanager.exception.UserNotFoundException;
 import br.com.food_manager.foodmanager.model.User;
 import br.com.food_manager.foodmanager.repository.UserRepository;
+import br.com.food_manager.foodmanager.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
