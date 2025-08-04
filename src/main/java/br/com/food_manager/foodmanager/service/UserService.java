@@ -11,6 +11,5 @@ public interface UserService {
     void deleteById(Long id);
     User update(Long id, User user);
     User findByLogin(String login);
-    User partialUpdate(Long id, User userUpdates);
     void validateUserData(User user, Long excludeId);
 }

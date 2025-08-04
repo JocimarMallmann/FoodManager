@@ -199,7 +199,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\": \"joao123aaaa\"\r\n}\r\n",
+							"raw": "{\r\n    \"login\": \"umloginlegal123\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -207,7 +207,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/user/17",
+							"raw": "http://localhost:8080/api/user/16",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -216,43 +216,7 @@
 							"path": [
 								"api",
 								"user",
-								"17"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update User",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJqb2NpbWFyLm1hbGxtYW5uIiwiaWF0IjoxNzU0MTkwODIzLCJleHAiOjE3NTQyNzcyMjN9.gbFRVGEgztT3TbPkeWjz1Vjwt0Z74BOBfwWXAlOSU0qqrgBqPZ_WvHX7DVNmAm3j",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Novo Nome\",\r\n  \"email\": \"novoemail@exemplo.com\",\r\n  \"login\": \"novologin\",\r\n  \"address\": \"Novo Endereço\",\r\n  \"password\": \"novasenha\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/api/user/17",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"user",
-								"17"
+								"16"
 							]
 						}
 					},
