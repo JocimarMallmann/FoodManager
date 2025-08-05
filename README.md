@@ -30,6 +30,8 @@ Desenvolver um backend completo e robusto utilizando o framework Spring Boot, co
 - 🔄 **Flyway** - Migração de banco de dados
 - 📊 **Spring Data JPA** - Persistência de dados
 - ✅ **Spring Boot Validation** - Validação de dados
+- 🔐 **Spring Security** - Autenticação e autorização
+- 🔑 **JWT** - Tokens de autenticação
 - 🎯 **Lombok** - Redução de código boilerplate
 
 ## 🚀 Como Rodar o Projeto
@@ -124,21 +126,49 @@ FoodManager/
 └── README.md
 ```
 
-## 🌟 Funcionalidades Planejadas
+## 🌟 Funcionalidades Implementadas
 
-### Fase 1 (Atual)
+### ✅ Fase 1 - COMPLETA
 - ✅ Configuração do ambiente Docker
-- ✅ Configuração do banco de dados MySQL
+- ✅ Configuração do banco de dados MySQL com Flyway
 - ✅ Estrutura base do Spring Boot
-- 🔄 Gerenciamento de usuários (CRUD)
-- 🔄 Sistema de autenticação e autorização
+- ✅ **Gerenciamento de usuários (CRUD completo)**
+- ✅ **Sistema de autenticação e autorização (Spring Security + JWT)**
+- ✅ **Exception handling global**
+- ✅ **Validações de dados**
 
-### Fases Futuras
-- 🔜 Gestão de restaurantes
-- 🔜 Sistema de pedidos
-- 🔜 Avaliações e comentários
-- 🔜 API para clientes
-- 🔜 Dashboard administrativo
+### 🚀 APIs Disponíveis
+- 👤 **Users API** - CRUD completo de usuários
+- 🔐 **Auth API** - Autenticação e autorização  
+- 🔑 **Password API** - Troca segura de senhas
+- ⚠️ **Global Exception Handling** - Tratamento padronizado de erros
+
+### 📋 Endpoints Principais
+```bash
+# Usuários
+GET    /api/user           # Listar usuários
+GET    /api/user/{id}      # Buscar usuário por ID
+POST   /api/user           # Criar usuário
+PATCH  /api/user/{id}      # Atualizar usuário
+DELETE /api/user/{id}      # Deletar usuário
+PUT    /api/user/{id}/password  # Trocar senha
+
+# Autenticação
+POST   /api/auth/register  # Registrar usuário
+POST   /api/auth/login     # Login do usuário
+```
+
+### 🔜 Próximas Fases
+- **Fase 2:** Gestão de restaurantes e cardápios
+- **Fase 3:** Sistema de pedidos e pagamentos
+- **Fase 4:** Avaliações e comentários
+- **Fase 5:** Dashboard administrativo e relatórios
+
+### 📋 Status Atual
+- **Progresso:** 80% implementado
+- **Módulo de Usuários:** ✅ 100% Completo (com troca de senha)
+- **Sistema de Segurança:** ✅ 95% Implementado
+- **Banco de Dados:** ✅ 100% Funcional
 
 ## 🤝 Contribuindo
 

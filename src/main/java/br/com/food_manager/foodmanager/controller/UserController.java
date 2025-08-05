@@ -2,6 +2,7 @@ package br.com.food_manager.foodmanager.controller;
 
 import br.com.food_manager.foodmanager.mapper.UserMapper;
 import br.com.food_manager.foodmanager.model.User;
+import br.com.food_manager.foodmanager.model.dto.ChangePasswordRequest;
 import br.com.food_manager.foodmanager.model.dto.UserRequest;
 import br.com.food_manager.foodmanager.model.dto.UserResponse;
 import br.com.food_manager.foodmanager.model.dto.UserUpdateRequest;
@@ -60,6 +61,15 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/password")
+    public ResponseEntity<Void> changePassword(
+            @PathVariable Long id,
+            @Valid @RequestBody ChangePasswordRequest request) {
+        
+        userService.changePassword(id, request.currentPassword(), request.newPassword());
         return ResponseEntity.noContent().build();
     }
 }

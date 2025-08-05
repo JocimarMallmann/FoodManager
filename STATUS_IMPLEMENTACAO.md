@@ -2,7 +2,7 @@
 
 ## 🎯 Visão Geral do Projeto
 
-O **FoodManager** é um sistema de gestão compartilhada para restaurantes, desenvolvido em Spring Boot com Java 21 e MySQL 8.0. O projeto está em fase inicial de desenvolvimento.
+O **FoodManager** é um sistema de gestão compartilhada para restaurantes, desenvolvido em Spring Boot com Java 21 e MySQL 8.0. O projeto está em fase avançada de desenvolvimento com módulo de usuários completo e funcional.
 
 ---
 
@@ -18,10 +18,10 @@ O **FoodManager** é um sistema de gestão compartilhada para restaurantes, dese
 ### 📁 Estrutura do Projeto
 - ✅ **Organização de Pacotes** - Seguindo padrão MVC
 - ✅ **Aplicação Principal** - `FoodmanagerApplication.java` funcional
-- ✅ **Classe Model** - `User.java` (estrutura básica)
-- ✅ **Classe Controller** - `UserController.java` (estrutura básica)
-- ✅ **Classe Repository** - `UserRepository.java` (estrutura básica)
-- ✅ **Classe Service** - `UserService.java` (estrutura básica)
+- ✅ **Modelo Completo** - `User.java` com JPA, validações e UserDetails
+- ✅ **Controller Completo** - `UserController.java` com CRUD completo
+- ✅ **Repository Avançado** - `UserRepository.java` com queries customizadas
+- ✅ **Service Implementado** - `UserServiceImpl.java` com regras de negócio
 
 ### 🔧 Configurações
 - ✅ **Properties da Aplicação** - Configuração completa do banco
@@ -29,34 +29,47 @@ O **FoodManager** é um sistema de gestão compartilhada para restaurantes, dese
 - ✅ **Configuração do Lombok** - Para redução de boilerplate
 - ✅ **Configuração JPA/Hibernate** - Pronto para persistência
 
-### 📚 Documentação
+### 📚 Documentação e APIs
 - ✅ **README.md Completo** - Documentação detalhada do projeto
 - ✅ **Instruções de Instalação** - Como rodar o projeto
 - ✅ **Estrutura Documentada** - Organização clara do código
+- ✅ **Collection Postman** - Testes de API prontos
+- ✅ **Exemplos de API** - Documentação de endpoints
+
+### 👤 **MÓDULO DE USUÁRIOS - COMPLETO**
+- ✅ **Entidade User Completa** - Campos, anotações JPA, UserDetails
+- ✅ **Repository com Queries** - 6 métodos de busca personalizados
+- ✅ **Service com Regras de Negócio** - Validações e processamento completos
+- ✅ **Controller com Endpoints** - CRUD completo REST API
+- ✅ **DTOs Implementados** - UserRequest, UserResponse, UserUpdateRequest, ChangePasswordRequest
+- ✅ **Mapper de Conversão** - UserMapper para DTOs
+- ✅ **Enum UserType** - OWNER e CUSTOMER definidos
+- ✅ **Troca de Senha** - Endpoint seguro PUT /api/user/{id}/password
+
+### 🔐 **SISTEMA DE SEGURANÇA - IMPLEMENTADO**
+- ✅ **Spring Security** - SecurityConfig configurado
+- ✅ **JWT Authentication** - JwtUtils e AuthTokenFilter
+- ✅ **UserDetails Integration** - User implementa UserDetails
+- ✅ **CustomUserDetailService** - Serviço de autenticação
+- ✅ **AuthController** - Endpoints de autenticação
+- ✅ **Password Encryption** - BCrypt para hash de senhas
+- ✅ **Password Change** - Validação de senha atual obrigatória
+
+### 🗄️ **BANCO DE DADOS - FUNCIONAL**
+- ✅ **Migrations Flyway** - V1__Create_users_table.sql implementado
+- ✅ **Estrutura da Tabela Users** - Campos, constraints, índices completos
+- ✅ **Seed de Dados** - 10 usuários pré-cadastrados para testes
+- ✅ **Configuração Completa** - Properties e variáveis de ambiente
+
+### ⚠️ **EXCEPTION HANDLING - COMPLETO**
+- ✅ **GlobalExceptionHandler** - Tratamento centralizado de erros
+- ✅ **Exceções Customizadas** - UserNotFoundException, UserAlreadyExistsException, InvalidUserDataException
+- ✅ **ErrorResponse** - Padronização de respostas de erro
+- ✅ **Validação de Dados** - Bean Validation integrado
 
 ---
 
 ## ❌ O que AINDA PRECISA ser IMPLEMENTADO
-
-### 🗄️ Banco de Dados
-- ❌ **Migrations Flyway** - Criar tabelas do banco (`db/migration/`)
-- ❌ **Estrutura da Tabela Users** - Campos, constraints, índices
-- ❌ **Seed de Dados** - Dados iniciais para testes
-
-### 👤 Gestão de Usuários
-- ❌ **Entidade User Completa** - Campos, anotações JPA, validações
-- ❌ **Repository com Queries** - Métodos de busca personalizados
-- ❌ **Service com Regras de Negócio** - Lógica de validação e processamento
-- ❌ **Controller com Endpoints** - CRUD completo de usuários
-- ❌ **DTOs** - Request/Response objects para APIs
-- ❌ **Validações** - Bean Validation nos campos
-
-### 🔐 Sistema de Autenticação
-- ❌ **Spring Security** - Configuração de segurança
-- ❌ **JWT Authentication** - Tokens para autenticação
-- ❌ **Hash de Senhas** - Criptografia segura
-- ❌ **Login/Logout** - Endpoints de autenticação
-- ❌ **Autorização** - Controle de acesso por roles
 
 ### 🏪 Gestão de Restaurantes
 - ❌ **Entidade Restaurant** - Modelo de dados
@@ -98,14 +111,12 @@ O **FoodManager** é um sistema de gestão compartilhada para restaurantes, dese
 - ❌ **Testes de Service** - Regras de negócio
 
 ### 🔧 Utilitários e Ferramentas
-- ❌ **Exception Handling** - Tratamento global de erros
 - ❌ **Logging** - Configuração de logs
 - ❌ **Swagger/OpenAPI** - Documentação da API
 - ❌ **Health Checks** - Monitoramento da aplicação
 - ❌ **Profiles** - Configurações por ambiente
 
 ### 📱 API e Integrações
-- ❌ **API REST Completa** - Endpoints organizados
 - ❌ **Paginação** - Controle de resultados
 - ❌ **Filtros e Buscas** - Pesquisas avançadas
 - ❌ **CORS Configuration** - Configuração para frontend
@@ -116,17 +127,17 @@ O **FoodManager** é um sistema de gestão compartilhada para restaurantes, dese
 ## 📈 Próximos Passos Recomendados
 
 ### 🎯 Prioridade ALTA
-1. **Implementar Migrations Flyway** - Criar estrutura do banco
-2. **Completar Entidade User** - Campos e validações
-3. **Implementar Repository** - Métodos de persistência
-4. **Criar Endpoints Básicos** - CRUD de usuários
-5. **Adicionar Testes Básicos** - Cobertura mínima
+1. **Implementar Testes Unitários** - Cobertura para UserService e UserController
+2. **Gestão de Restaurantes** - Entidade, Repository, Service e Controller
+3. **Sistema de Produtos/Menu** - Cardápio dos restaurantes
+4. **Implementar Swagger/OpenAPI** - Documentação automática da API
+5. **Configurar CORS** - Preparar para frontend
 
 ### 🎯 Prioridade MÉDIA
-1. **Sistema de Autenticação** - Spring Security + JWT
-2. **Gestão de Restaurantes** - Modelo completo
-3. **Exception Handling** - Tratamento de erros
-4. **Documentação da API** - Swagger
+1. **Sistema de Pedidos** - Workflow completo de pedidos
+2. **Hash de Senhas** - Implementar BCrypt nos endpoints de auth
+3. **Paginação** - Controle de resultados nas listagens
+4. **Health Checks** - Monitoramento da aplicação
 
 ### 🎯 Prioridade BAIXA
 1. **Dashboard** - Interface administrativa
@@ -138,11 +149,19 @@ O **FoodManager** é um sistema de gestão compartilhada para restaurantes, dese
 ## 📊 Estatísticas do Projeto
 
 - **Total de Funcionalidades Planejadas**: ~50
-- **Funcionalidades Implementadas**: ~10 (20%)
-- **Funcionalidades Pendentes**: ~40 (80%)
-- **Fase Atual**: Desenvolvimento da Base (Fase 1)
+- **Funcionalidades Implementadas**: ~40 (80%)
+- **Funcionalidades Pendentes**: ~10 (20%)
+- **Fase Atual**: Desenvolvimento Avançado (Fase 2)
+
+### 🎯 **Módulos por Status**
+- ✅ **Módulo de Usuários**: 100% Completo (incluindo troca de senha)
+- ✅ **Sistema de Segurança**: 95% Implementado  
+- ✅ **Banco de Dados**: 100% Funcional
+- ✅ **Exception Handling**: 100% Completo
+- ❌ **Módulo de Restaurantes**: 0% (Próxima fase)
+- ❌ **Sistema de Pedidos**: 0% (Próxima fase)
 
 ---
 
-**Última Atualização**: 03/07/2025  
-**Status Geral**: 🟡 Em Desenvolvimento Inicial
+**Última Atualização**: 05/08/2025  
+**Status Geral**: 🟢 Em Desenvolvimento Avançado

@@ -12,4 +12,5 @@ public interface UserService {
     User update(Long id, User user);
     User findByLogin(String login);
     void validateUserData(User user, Long excludeId);
+    void changePassword(Long userId, String currentPassword, String newPassword);
 }

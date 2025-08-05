@@ -6,6 +6,7 @@ import br.com.food_manager.foodmanager.exception.UserNotFoundException;
 import br.com.food_manager.foodmanager.model.User;
 import br.com.food_manager.foodmanager.repository.UserRepository;
 import br.com.food_manager.foodmanager.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -18,9 +19,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -77,36 +80,46 @@ public class UserServiceImpl implements UserService {
 
         User existingUser = findById(id);
 
-        // Atualiza apenas os campos não nulos/não vazios
-        if (StringUtils.hasText(userUpdates.getName())) {
-            existingUser.setName(userUpdates.getName());
-        }
-
-        if (StringUtils.hasText(userUpdates.getEmail())) {
-            // Verifica duplicação apenas se o email está sendo alterado
-            if (!userUpdates.getEmail().equals(existingUser.getEmail()) &&
-                userRepository.existsByEmailAndIdNot(userUpdates.getEmail(), id)) {
-                throw new UserAlreadyExistsException("email", userUpdates.getEmail());
-            }
-            existingUser.setEmail(userUpdates.getEmail());
-        }
-
-        if (StringUtils.hasText(userUpdates.getLogin())) {
-            // Verifica duplicação apenas se o login está sendo alterado
-            if (!userUpdates.getLogin().equals(existingUser.getLogin()) &&
-                userRepository.existsByLoginAndIdNot(userUpdates.getLogin(), id)) {
-                throw new UserAlreadyExistsException("login", userUpdates.getLogin());
-            }
-            existingUser.setLogin(userUpdates.getLogin());
-        }
-
-        if (StringUtils.hasText(userUpdates.getAddress())) {
-            existingUser.setAddress(userUpdates.getAddress());
-        }
+        updateName(existingUser, userUpdates);
+        updateEmail(existingUser, userUpdates, id);
+        updateLogin(existingUser, userUpdates, id);
+        updateAddress(existingUser, userUpdates);
 
         existingUser.setLastUpdated(new Date());
 
         return userRepository.save(existingUser);
+    }
+
+    private void updateName(User existing, User updates) {
+        if (StringUtils.hasText(updates.getName())) {
+            existing.setName(updates.getName());
+        }
+    }
+
+    private void updateEmail(User existing, User updates, Long id) {
+        if (StringUtils.hasText(updates.getEmail())) {
+            if (!updates.getEmail().equals(existing.getEmail()) &&
+                userRepository.existsByEmailAndIdNot(updates.getEmail(), id)) {
+                throw new UserAlreadyExistsException("email", updates.getEmail());
+            }
+            existing.setEmail(updates.getEmail());
+        }
+    }
+
+    private void updateLogin(User existing, User updates, Long id) {
+        if (StringUtils.hasText(updates.getLogin())) {
+            if (!updates.getLogin().equals(existing.getLogin()) &&
+                userRepository.existsByLoginAndIdNot(updates.getLogin(), id)) {
+                throw new UserAlreadyExistsException("login", updates.getLogin());
+            }
+            existing.setLogin(updates.getLogin());
+        }
+    }
+
+    private void updateAddress(User existing, User updates) {
+        if (StringUtils.hasText(updates.getAddress())) {
+            existing.setAddress(updates.getAddress());
+        }
     }
 
     @Override
@@ -116,7 +129,8 @@ public class UserServiceImpl implements UserService {
             throw new InvalidUserDataException("Login não pode ser vazio");
         }
 
-        return userRepository.findByLogin(login).orElse(null);
+        return userRepository.findByLogin(login)
+                .orElseThrow(() -> new UserNotFoundException("login", login));
     }
 
     @Override
@@ -125,9 +139,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidUserDataException("Usuário não pode ser nulo");
         }
 
-        // Verificações de duplicação
         if (excludeId == null) {
-            // Para criação de novo usuário
             if (StringUtils.hasText(user.getEmail()) && userRepository.existsByEmail(user.getEmail())) {
                 throw new UserAlreadyExistsException("email", user.getEmail());
             }
@@ -136,7 +148,6 @@ public class UserServiceImpl implements UserService {
                 throw new UserAlreadyExistsException("login", user.getLogin());
             }
         } else {
-            // Para atualização de usuário existente
             if (StringUtils.hasText(user.getEmail()) && userRepository.existsByEmailAndIdNot(user.getEmail(), excludeId)) {
                 throw new UserAlreadyExistsException("email", user.getEmail());
             }
@@ -145,5 +156,30 @@ public class UserServiceImpl implements UserService {
                 throw new UserAlreadyExistsException("login", user.getLogin());
             }
         }
+    }
+
+    @Override
+    public void changePassword(Long userId, String currentPassword, String newPassword) {
+        if (userId == null) {
+            throw new InvalidUserDataException("ID do usuário não pode ser nulo");
+        }
+
+        if (!StringUtils.hasText(currentPassword)) {
+            throw new InvalidUserDataException("Senha atual é obrigatória");
+        }
+
+        if (!StringUtils.hasText(newPassword)) {
+            throw new InvalidUserDataException("Nova senha é obrigatória");
+        }
+
+        User user = findById(userId);
+
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new InvalidUserDataException("Senha atual incorreta");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setLastUpdated(new Date());
+        userRepository.save(user);
     }
 }
