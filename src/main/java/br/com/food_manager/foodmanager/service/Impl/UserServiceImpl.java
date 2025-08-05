@@ -66,28 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(Long id, User user) {
-        if (id == null) {
-            throw new InvalidUserDataException("ID do usuário não pode ser nulo");
-        }
-
-        if (user == null) {
-            throw new InvalidUserDataException("Dados do usuário não podem ser nulos");
-        }
-
-        // Verifica se o usuário existe
-        findById(id);
-
-        validateUserData(user, id);
-
-        user.setId(id);
-        user.setLastUpdated(new Date());
-
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User partialUpdate(Long id, User userUpdates) {
+    public User update(Long id, User userUpdates) {
         if (id == null) {
             throw new InvalidUserDataException("ID do usuário não pode ser nulo");
         }

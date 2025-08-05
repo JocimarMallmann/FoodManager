@@ -4,6 +4,7 @@ import br.com.food_manager.foodmanager.model.User;
 import br.com.food_manager.foodmanager.model.UserType;
 import br.com.food_manager.foodmanager.model.dto.UserRequest;
 import br.com.food_manager.foodmanager.model.dto.UserResponse;
+import br.com.food_manager.foodmanager.model.dto.UserUpdateRequest;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -46,6 +47,18 @@ public class UserMapper {
         user.setPassword(userRequest.password());
         user.setAddress(userRequest.address());
         user.setUserType(userRequest.userType() != null ? userRequest.userType() : UserType.CUSTOMER);
+        return user;
+    }
+
+    public User toEntityForUpdate(UserUpdateRequest userUpdateRequest) {
+        if (userUpdateRequest == null) {
+            return null;
+        }
+        User user = new User();
+        user.setName(userUpdateRequest.name());
+        user.setEmail(userUpdateRequest.email());
+        user.setLogin(userUpdateRequest.login());
+        user.setAddress(userUpdateRequest.address());
         return user;
     }
 }

@@ -46,30 +46,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUser(
-            @PathVariable Long id,
-            @Valid @RequestBody UserRequest userRequest) {
-
-        User user = userMapper.toEntity(userRequest);
-        User updated = userService.update(id, user);
-        UserResponse response = userMapper.toResponse(updated);
-        return ResponseEntity.ok(response);
-    }
-
     @PatchMapping("/{id}")
-    public ResponseEntity<UserResponse> updateUserData(
+    public ResponseEntity<UserResponse> updateUser(
             @PathVariable Long id,
             @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
 
-        // Cria um objeto User apenas com os campos a serem atualizados
-        User userUpdates = new User();
-        userUpdates.setName(userUpdateRequest.name());
-        userUpdates.setEmail(userUpdateRequest.email());
-        userUpdates.setLogin(userUpdateRequest.login());
-        userUpdates.setAddress(userUpdateRequest.address());
-
-        User updated = userService.partialUpdate(id, userUpdates);
+        User userUpdates = userMapper.toEntityForUpdate(userUpdateRequest);
+        User updated = userService.update(id, userUpdates);
         UserResponse response = userMapper.toResponse(updated);
         return ResponseEntity.ok(response);
     }

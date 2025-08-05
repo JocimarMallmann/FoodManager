@@ -366,14 +366,6 @@ Todas as exceções acima são capturadas e formatadas em `ErrorResponse` padron
     - 409 (email/login já existe)
     - 500 (erro interno)
 
-### PUT /api/user/{id}
-- **Descrição**: Atualiza usuário completamente
-- **Possíveis Erros**:
-    - 400 (dados inválidos)
-    - 404 (usuário não encontrado)
-    - 409 (email/login já existe)
-    - 500 (erro interno)
-
 ### PATCH /api/user/{id}
 - **Descrição**: Atualiza usuário parcialmente
 - **Possíveis Erros**:
