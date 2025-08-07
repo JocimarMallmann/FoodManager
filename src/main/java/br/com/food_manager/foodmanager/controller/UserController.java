@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserController {
+public class UserController implements UserControllerDoc {
     private final UserService userService;
     private final UserMapper userMapper;
 
