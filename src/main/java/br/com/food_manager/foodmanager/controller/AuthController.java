@@ -5,6 +5,8 @@ import br.com.food_manager.foodmanager.model.User;
 import br.com.food_manager.foodmanager.model.UserType;
 import br.com.food_manager.foodmanager.model.dto.UserRequest;
 import br.com.food_manager.foodmanager.model.dto.UserResponse;
+import br.com.food_manager.foodmanager.model.dto.LoginRequest;
+import br.com.food_manager.foodmanager.model.dto.JwtResponse;
 import br.com.food_manager.foodmanager.security.JwtUtils;
 import br.com.food_manager.foodmanager.service.UserService;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -67,23 +69,4 @@ public class AuthController implements AuthControllerDoc {
             return ResponseEntity.status(401).body(new JwtResponse("", "", "Invalid credentials"));
         }
     }
-
-    @Schema(description = "Dados para login do usuário")
-    public record LoginRequest(
-            @Schema(description = "Login do usuário (email)", example = "user@example.com")
-            String login, 
-            @Schema(description = "Senha do usuário", example = "123456")
-            String password
-    ) {}
-
-    @Schema(description = "Resposta contendo o token JWT após login bem-sucedido")
-    public record JwtResponse(
-            @Schema(description = "Token JWT gerado", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
-            String token, 
-            @Schema(description = "Tipo do token", example = "Bearer")
-            String type, 
-            @Schema(description = "Nome de usuário autenticado", example = "user@example.com")
-            String username
-    ) {}
-
 }

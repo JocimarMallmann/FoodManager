@@ -2,6 +2,8 @@ package br.com.food_manager.foodmanager.controller;
 
 import br.com.food_manager.foodmanager.model.dto.UserRequest;
 import br.com.food_manager.foodmanager.model.dto.UserResponse;
+import br.com.food_manager.foodmanager.model.dto.LoginRequest;
+import br.com.food_manager.foodmanager.model.dto.JwtResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -50,5 +52,5 @@ public interface AuthControllerDoc {
                     )
             }
     )
-    ResponseEntity<AuthController.JwtResponse> login(@RequestBody AuthController.LoginRequest loginRequest);
+    ResponseEntity<JwtResponse> login(@RequestBody LoginRequest loginRequest);
 }
