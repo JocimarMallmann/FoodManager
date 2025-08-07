@@ -68,7 +68,7 @@ public class UserController implements UserControllerDoc {
     public ResponseEntity<Void> changePassword(
             @PathVariable Long id,
             @Valid @RequestBody ChangePasswordRequest request) {
-        
+
         userService.changePassword(id, request.currentPassword(), request.newPassword());
         return ResponseEntity.noContent().build();
     }
