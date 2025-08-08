@@ -2,6 +2,31 @@
 
 Este documento demonstra como o sistema de tratamento de erros funciona na prática seguindo as **melhores práticas do Spring Boot** - com tratamento **100% centralizado** no GlobalExceptionHandler.
 
+## 🔐 **Fluxo de Autenticação JWT**
+
+### **1. Registro (POST /api/auth/register)**
+- Cria uma nova conta no sistema
+- Senha é criptografada automaticamente
+- UserType é definido como CUSTOMER por padrão
+- Retorna dados do usuário criado (sem token)
+
+### **2. Login (POST /api/auth/login)**
+- Valida credenciais (login + password)
+- Gera token JWT com tempo de expiração
+- Retorna token para uso em requisições subsequentes
+
+### **3. Uso do Token**
+- Incluir header: `Authorization: Bearer {token}`
+- Token é validado a cada requisição protegida
+- Endpoints protegidos requerem autenticação válida
+
+### **4. Segurança**
+- Senhas são criptografadas com BCrypt
+- Tokens JWT têm tempo de expiração configurável
+- Credenciais inválidas retornam 401 Unauthorized
+
+---
+
 ## 🏗️ **Arquitetura do Tratamento de Erros**
 
 ```
@@ -13,6 +38,216 @@ Controller (limpo) → Service (lança exceptions) → GlobalExceptionHandler (t
 - ✅ **Service**: Apenas lógica de negócio + exceções específicas  
 - ✅ **GlobalExceptionHandler**: Tratamento 100% centralizado
 - ✅ **ErrorResponse**: Formato padronizado para todas as respostas de erro
+
+## 🔐 **Exemplos de Endpoints de Autenticação**
+
+## AUTH 1. Registro de Usuário com Sucesso
+
+### Request:
+```http
+POST /api/auth/register
+Content-Type: application/json
+
+{
+    "name": "João Silva",
+    "email": "joao.silva@email.com",
+    "login": "joao.silva",
+    "password": "senha123456",
+    "address": "Rua das Flores, 123",
+    "userType": "CUSTOMER"
+}
+```
+
+### Response (201 Created):
+```json
+{
+    "id": 1,
+    "name": "João Silva",
+    "email": "joao.silva@email.com",
+    "login": "joao.silva",
+    "lastUpdated": "2025-08-07T14:30:00",
+    "address": "Rua das Flores, 123"
+}
+```
+
+## AUTH 2. Erro no Registro - Dados Inválidos (Bean Validation)
+
+### Request:
+```http
+POST /api/auth/register
+Content-Type: application/json
+
+{
+    "name": "",
+    "email": "email-invalido",
+    "login": "ab",
+    "password": "123",
+    "address": "",
+    "userType": "CUSTOMER"
+}
+```
+
+### Response (400 Bad Request):
+```json
+{
+    "message": "Dados inválidos fornecidos",
+    "status": 400,
+    "error": "Bad Request",
+    "timestamp": "2025-08-07 14:30:00",
+    "path": "/api/auth/register",
+    "details": [
+        "Nome é obrigatório",
+        "Email deve ter formato válido",
+        "Login deve ter entre 3 e 50 caracteres",
+        "Senha deve ter pelo menos 6 caracteres",
+        "Endereço é obrigatório"
+    ]
+}
+```
+
+## AUTH 3. Erro no Registro - Email/Login já existe
+
+### Request:
+```http
+POST /api/auth/register
+Content-Type: application/json
+
+{
+    "name": "Maria Santos",
+    "email": "joao.silva@email.com",
+    "login": "maria.santos",
+    "password": "senha123456",
+    "address": "Rua das Palmeiras, 456",
+    "userType": "CUSTOMER"
+}
+```
+
+### Response (409 Conflict):
+```json
+{
+    "message": "Usuário com email 'joao.silva@email.com' já existe",
+    "status": 409,
+    "error": "Conflict",
+    "timestamp": "2025-08-07 14:30:00",
+    "path": "/api/auth/register",
+    "details": null
+}
+```
+
+## AUTH 4. Login com Sucesso
+
+### Request:
+```http
+POST /api/auth/login
+Content-Type: application/json
+
+{
+    "login": "joao.silva",
+    "password": "senha123456"
+}
+```
+
+### Response (200 OK):
+```json
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2FvLnNpbHZhIiwiaWF0IjoxNjU2Nzc5MjAwLCJleHAiOjE2NTY4NjU2MDB9.ABC123XYZ789",
+    "type": "Bearer",
+    "username": "joao.silva"
+}
+```
+
+## AUTH 5. Erro no Login - Credenciais Inválidas
+
+### Request:
+```http
+POST /api/auth/login
+Content-Type: application/json
+
+{
+    "login": "joao.silva",
+    "password": "senhaerrada"
+}
+```
+
+### Response (401 Unauthorized):
+```json
+{
+    "token": "",
+    "type": "",
+    "username": "Invalid credentials"
+}
+```
+
+## AUTH 6. Erro no Login - Dados de Login Inválidos (Campos Vazios)
+
+### Request:
+```http
+POST /api/auth/login
+Content-Type: application/json
+
+{
+    "login": "",
+    "password": ""
+}
+```
+
+### Response (400 Bad Request):
+```json
+{
+    "message": "Dados inválidos fornecidos",
+    "status": 400,
+    "error": "Bad Request",
+    "timestamp": "2025-08-07 14:30:00",
+    "path": "/api/auth/login",
+    "details": [
+        "Login é obrigatório",
+        "Senha é obrigatória"
+    ]
+}
+```
+
+## AUTH 7. Usando Token JWT em Requisições Protegidas
+
+### Request (Exemplo de busca de usuário com autenticação):
+```http
+GET /api/user/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2FvLnNpbHZhIiwiaWF0IjoxNjU2Nzc5MjAwLCJleHAiOjE2NTY4NjU2MDB9.ABC123XYZ789
+```
+
+### Response (200 OK):
+```json
+{
+    "id": 1,
+    "name": "João Silva",
+    "email": "joao.silva@email.com",
+    "login": "joao.silva",
+    "lastUpdated": "2025-08-07T14:30:00",
+    "address": "Rua das Flores, 123"
+}
+```
+
+## AUTH 9. Erro de Acesso sem Token
+
+### Request:
+```http
+GET /api/user/1
+```
+
+### Response (401 Unauthorized):
+```json
+{
+    "message": "Token de acesso é obrigatório",
+    "status": 401,
+    "error": "Unauthorized",
+    "timestamp": "2025-08-07 14:30:00",
+    "path": "/api/user/1",
+    "details": null
+}
+```
+
+---
+
+## 👤 **Exemplos de Endpoints de Usuário (CRUD)**
 
 ## 1. Criação de Usuário com Sucesso
 
@@ -298,10 +533,11 @@ GET /api/user
 
 ## Códigos de Status HTTP Utilizados
 
-- **200 OK**: Operação realizada com sucesso
-- **201 Created**: Recurso criado com sucesso
+- **200 OK**: Operação realizada com sucesso (login, busca, atualização)
+- **201 Created**: Recurso criado com sucesso (registro de usuário)
 - **204 No Content**: Recurso removido com sucesso
 - **400 Bad Request**: Dados inválidos fornecidos (validação DTO ou Service)
+- **401 Unauthorized**: Não autenticado - token ausente ou inválido
 - **404 Not Found**: Recurso não encontrado (UserNotFoundException)
 - **409 Conflict**: Conflito de dados - duplicação (UserAlreadyExistsException ou DataIntegrityViolationException)
 - **500 Internal Server Error**: Erro interno do servidor (DataAccessException ou Exception genérica)
@@ -345,6 +581,21 @@ Todas as exceções acima são capturadas e formatadas em `ErrorResponse` padron
 - Timestamp da ocorrência  
 - Path da requisição
 - Details opcionais (principalmente para validação)
+
+## Endpoints de Autenticação
+
+### POST /api/auth/register
+- **Descrição**: Registra um novo usuário no sistema
+- **Possíveis Erros**:
+    - 400 (dados inválidos)
+    - 409 (email/login já existe)
+    - 500 (erro interno)
+
+### POST /api/auth/login
+- **Descrição**: Realiza autenticação e retorna token JWT
+- **Possíveis Erros**:
+    - 401 (credenciais inválidas)
+    - 500 (erro interno)
 
 ## Endpoints do CRUD de Usuários
 

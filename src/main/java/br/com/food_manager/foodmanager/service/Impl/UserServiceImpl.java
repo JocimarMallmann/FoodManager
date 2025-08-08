@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidUserDataException("Usuário não pode ser nulo");
         }
 
-        validateUserData(user, null);
+        validateUserData(user);
         user.setLastUpdated(new Date());
 
         return userRepository.save(user);
@@ -134,31 +134,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void validateUserData(User user, Long excludeId) {
-        if (user == null) {
-            throw new InvalidUserDataException("Usuário não pode ser nulo");
-        }
-
-        if (excludeId == null) {
-            if (StringUtils.hasText(user.getEmail()) && userRepository.existsByEmail(user.getEmail())) {
-                throw new UserAlreadyExistsException("email", user.getEmail());
-            }
-
-            if (StringUtils.hasText(user.getLogin()) && userRepository.existsByLogin(user.getLogin())) {
-                throw new UserAlreadyExistsException("login", user.getLogin());
-            }
-        } else {
-            if (StringUtils.hasText(user.getEmail()) && userRepository.existsByEmailAndIdNot(user.getEmail(), excludeId)) {
-                throw new UserAlreadyExistsException("email", user.getEmail());
-            }
-
-            if (StringUtils.hasText(user.getLogin()) && userRepository.existsByLoginAndIdNot(user.getLogin(), excludeId)) {
-                throw new UserAlreadyExistsException("login", user.getLogin());
-            }
-        }
-    }
-
-    @Override
     public void changePassword(Long userId, String currentPassword, String newPassword) {
         if (userId == null) {
             throw new InvalidUserDataException("ID do usuário não pode ser nulo");
@@ -181,5 +156,18 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setLastUpdated(new Date());
         userRepository.save(user);
+    }
+
+    private void validateUserData(User user) {
+        if (user == null) {
+            throw new InvalidUserDataException("Usuário não pode ser nulo");
+        }
+        if (StringUtils.hasText(user.getEmail()) && userRepository.existsByEmail(user.getEmail())) {
+            throw new UserAlreadyExistsException("email", user.getEmail());
+        }
+
+        if (StringUtils.hasText(user.getLogin()) && userRepository.existsByLogin(user.getLogin())) {
+            throw new UserAlreadyExistsException("login", user.getLogin());
+        }
     }
 }

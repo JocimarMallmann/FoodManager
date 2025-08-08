@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserController {
+public class UserController implements UserControllerDoc {
     private final UserService userService;
     private final UserMapper userMapper;
 
@@ -68,7 +68,7 @@ public class UserController {
     public ResponseEntity<Void> changePassword(
             @PathVariable Long id,
             @Valid @RequestBody ChangePasswordRequest request) {
-        
+
         userService.changePassword(id, request.currentPassword(), request.newPassword());
         return ResponseEntity.noContent().build();
     }

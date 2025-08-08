@@ -3,6 +3,8 @@ package br.com.food_manager.foodmanager.controller;
 import br.com.food_manager.foodmanager.mapper.UserMapper;
 import br.com.food_manager.foodmanager.model.User;
 import br.com.food_manager.foodmanager.model.UserType;
+import br.com.food_manager.foodmanager.model.dto.JwtResponse;
+import br.com.food_manager.foodmanager.model.dto.LoginRequest;
 import br.com.food_manager.foodmanager.model.dto.UserRequest;
 import br.com.food_manager.foodmanager.model.dto.UserResponse;
 import br.com.food_manager.foodmanager.security.JwtUtils;
@@ -15,13 +17,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 
 @RestController
 @RequestMapping("/api/auth")
-public class AuthController {
+public class AuthController implements AuthControllerDoc {
 
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
@@ -29,8 +34,8 @@ public class AuthController {
     private final JwtUtils jwtUtils;
     private final UserMapper userMapper;
 
-    public AuthController(UserService userService, PasswordEncoder passwordEncoder, 
-                         AuthenticationManager authenticationManager, JwtUtils jwtUtils, UserMapper userMapper) {
+    public AuthController(UserService userService, PasswordEncoder passwordEncoder,
+                          AuthenticationManager authenticationManager, JwtUtils jwtUtils, UserMapper userMapper) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
@@ -55,7 +60,7 @@ public class AuthController {
     public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest loginRequest) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.login(), loginRequest.password())
+                    new UsernamePasswordAuthenticationToken(loginRequest.login(), loginRequest.password())
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -66,11 +71,4 @@ public class AuthController {
             return ResponseEntity.status(401).body(new JwtResponse("", "", "Invalid credentials"));
         }
     }
-
-    public record LoginRequest(String login, String password) {
-    }
-
-    public record JwtResponse(String token, String type, String username) {
-    }
-
 }
