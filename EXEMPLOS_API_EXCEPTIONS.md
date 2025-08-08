@@ -24,7 +24,6 @@ Este documento demonstra como o sistema de tratamento de erros funciona na prát
 - Senhas são criptografadas com BCrypt
 - Tokens JWT têm tempo de expiração configurável
 - Credenciais inválidas retornam 401 Unauthorized
-- Tokens inválidos/expirados retornam 403 Forbidden
 
 ---
 
@@ -224,26 +223,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2FvLnNpb
     "login": "joao.silva",
     "lastUpdated": "2025-08-07T14:30:00",
     "address": "Rua das Flores, 123"
-}
-```
-
-## AUTH 8. Erro de Token JWT Inválido/Expirado
-
-### Request:
-```http
-GET /api/user/1
-Authorization: Bearer token_invalido_ou_expirado
-```
-
-### Response (403 Forbidden):
-```json
-{
-    "message": "Token JWT inválido ou expirado",
-    "status": 403,
-    "error": "Forbidden",
-    "timestamp": "2025-08-07 14:30:00",
-    "path": "/api/user/1",
-    "details": null
 }
 ```
 
@@ -559,7 +538,6 @@ GET /api/user
 - **204 No Content**: Recurso removido com sucesso
 - **400 Bad Request**: Dados inválidos fornecidos (validação DTO ou Service)
 - **401 Unauthorized**: Não autenticado - token ausente ou inválido
-- **403 Forbidden**: Token JWT inválido ou expirado
 - **404 Not Found**: Recurso não encontrado (UserNotFoundException)
 - **409 Conflict**: Conflito de dados - duplicação (UserAlreadyExistsException ou DataIntegrityViolationException)
 - **500 Internal Server Error**: Erro interno do servidor (DataAccessException ou Exception genérica)
