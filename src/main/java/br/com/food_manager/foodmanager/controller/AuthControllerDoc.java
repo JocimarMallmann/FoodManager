@@ -1,10 +1,13 @@
 package br.com.food_manager.foodmanager.controller;
 
+import br.com.food_manager.foodmanager.exception.ErrorResponse;
 import br.com.food_manager.foodmanager.model.dto.UserRequest;
 import br.com.food_manager.foodmanager.model.dto.UserResponse;
 import br.com.food_manager.foodmanager.model.dto.LoginRequest;
 import br.com.food_manager.foodmanager.model.dto.JwtResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -20,15 +23,35 @@ public interface AuthControllerDoc {
             responses = {
                     @ApiResponse(
                             responseCode = "201", 
-                            description = "Usuário registrado com sucesso"
+                            description = "Usuário registrado com sucesso",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = UserResponse.class)
+                            )
                     ),
                     @ApiResponse(
                             responseCode = "400", 
-                            description = "Dados inválidos fornecidos"
+                            description = "Dados inválidos fornecidos",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class)
+                            )
                     ),
                     @ApiResponse(
                             responseCode = "409", 
-                            description = "Usuário já existe com este email/login"
+                            description = "Usuário já existe com este email/login",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500", 
+                            description = "Erro interno do servidor",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class)
+                            )
                     )
             }
     )
@@ -40,15 +63,27 @@ public interface AuthControllerDoc {
             responses = {
                     @ApiResponse(
                             responseCode = "200", 
-                            description = "Login realizado com sucesso, token JWT retornado"
+                            description = "Login realizado com sucesso, token JWT retornado",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = JwtResponse.class)
+                            )
                     ),
                     @ApiResponse(
                             responseCode = "401", 
-                            description = "Credenciais inválidas"
+                            description = "Credenciais inválidas",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = JwtResponse.class)
+                            )
                     ),
                     @ApiResponse(
-                            responseCode = "400", 
-                            description = "Dados de login inválidos"
+                            responseCode = "500", 
+                            description = "Erro interno do servidor",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ErrorResponse.class)
+                            )
                     )
             }
     )
