@@ -9,8 +9,6 @@ services:
     depends_on:
       mysql_db:
         condition: service_healthy
-    env_file:
-      - .env.docker
     environment:
       SPRING_DATASOURCE_URL: ${DB_URL}
       SPRING_DATASOURCE_USERNAME: ${DB_USER}
@@ -30,8 +28,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
-    env_file:
-      - .env.docker
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}

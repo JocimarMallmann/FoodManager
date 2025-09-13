@@ -22,9 +22,8 @@ RUN ./mvnw dependency:go-offline
 # Agora, copia todo o restante do código-fonte da aplicação
 COPY . .
 
-# Compila o código, executa os testes e empacota a aplicação em um arquivo .jar
+# Compila o código, pula os testes e empacota a aplicação em um arquivo .jar
 RUN ./mvnw clean package -DskipTests
-
 
 # -------------------------------------------------------------------
 # Etapa 2: Imagem final de execução
